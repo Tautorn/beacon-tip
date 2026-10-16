@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "beacon-tip",
+  "homepage": "https://tautorn.github.io/beacon-tip/",
+  "items": [
+    {
+      "name": "beacon-tip",
+      "type": "registry:component",
+      "title": "Beacon Tip",
+      "description": "A pulsing beacon on any element that opens a \"what's new\" or tip popover. One tip opens at a time, hidden targets wait their turn, announcements expire, and seen tips are remembered.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["popover", "button"],
+      "files": [
+        {
+          "path": "registry/new-york/beacon-tip/beacon-tip.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}
