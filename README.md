@@ -5,6 +5,8 @@ A [shadcn/ui](https://ui.shadcn.com) component that puts a pulsing beacon on any
 
 **[Live demo](https://tautorn.github.io/beacon-tip/)**
 
+![Beacon Tip: the first tip opens, "Got it" moves to the next one, and the sidebar tip waits until the sidebar opens](docs/demo.gif)
+
 - **One at a time.** Only the first unseen tip opens on its own. The others keep pulsing until it is their turn.
 - **Hidden targets wait.** A tip inside a collapsed sidebar or an inactive tab joins the queue when it becomes visible.
 - **Announcements expire.** Give a tip an `until` date and it stops showing after that day.

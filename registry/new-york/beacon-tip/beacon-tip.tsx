@@ -204,6 +204,8 @@ export function createBeaconTips<T extends Record<string, BeaconTipDef>>(tips: T
     const anchorRef = useRef<HTMLSpanElement>(null)
     const { queue } = useTipState()
     const [open, setOpen] = useState(false)
+    // A tip that opens on its own must not pull focus away from what the user is doing.
+    const openedOnItsOwn = useRef(false)
     const isTurn = queue[0] === id
     // A snoozed tip reopened from its beacon is not in the queue but still goes with "Skip all".
     const pending = queue.includes(id) ? queue : [id, ...queue]
@@ -228,7 +230,10 @@ export function createBeaconTips<T extends Record<string, BeaconTipDef>>(tips: T
 
     useEffect(() => {
       if (!isTurn) return
-      const timer = setTimeout(() => setOpen(true), openDelay)
+      const timer = setTimeout(() => {
+        openedOnItsOwn.current = true
+        setOpen(true)
+      }, openDelay)
       return () => clearTimeout(timer)
     }, [isTurn])
 
@@ -245,6 +250,7 @@ export function createBeaconTips<T extends Record<string, BeaconTipDef>>(tips: T
     const openFromBeacon = (event: SyntheticEvent) => {
       event.preventDefault()
       event.stopPropagation()
+      openedOnItsOwn.current = false
       setOpen(true)
     }
 
@@ -269,7 +275,14 @@ export function createBeaconTips<T extends Record<string, BeaconTipDef>>(tips: T
             </span>
           </span>
         </PopoverAnchor>
-        <PopoverContent side={side} align={align} sideOffset={10} className="w-72 rounded-xl p-4">
+        <PopoverContent
+          side={side}
+          align={align}
+          sideOffset={10}
+          onOpenAutoFocus={event => openedOnItsOwn.current && event.preventDefault()}
+          onCloseAutoFocus={event => openedOnItsOwn.current && event.preventDefault()}
+          className="w-72 rounded-xl p-4"
+        >
           <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary uppercase">
             <Icon className="size-3" />
             {labels[kind]}
